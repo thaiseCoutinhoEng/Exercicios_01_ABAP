@@ -1,0 +1,79 @@
+*&---------------------------------------------------------------------*
+*& Leia a data atual do sistema e escreva em português a data por extenso.
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q03.
+
+DATA:
+  w_word_d      TYPE spell,
+  w_word_y      TYPE spell,
+  w_in(2)       TYPE c VALUE 'PT',
+  w_out         TYPE c,
+  day           TYPE p,
+  month         TYPE monum,
+  year          TYPE p,
+  day_caracter  TYPE string,
+  year_caracter TYPE string.
+
+"Pegando a data atual do sistema. formato (yyyymmdd).
+day   = sy-datum+6(2).
+month = sy-datum+4(2).
+year  = sy-datum+0(4).
+
+"Consulta retorna o nome do mes por extenso.
+SELECT SINGLE * FROM t015m INTO @DATA(t015m) WHERE spras EQ @sy-langu AND monum EQ @month.
+
+"Converter idioma ISO de dois dígitos -> chave de idioma SAP de um dígito
+CALL FUNCTION 'CONVERSION_EXIT_ISOLA_INPUT'
+  EXPORTING
+    input            = w_in
+  IMPORTING
+    output           = w_out
+  EXCEPTIONS
+    unknown_language = 1
+    OTHERS           = 2.
+
+IF sy-subrc EQ 0.
+"Converter os números e figuras em palavras.
+CALL FUNCTION 'SPELL_AMOUNT'
+  EXPORTING
+    amount    = day
+    currency  = ' '
+    filler    = ' '
+    language  = w_out
+  IMPORTING
+    in_words  = w_word_d
+  EXCEPTIONS
+    not_found = 1
+    too_large = 2
+    OTHERS    = 3.
+ENDIF.
+
+IF sy-subrc EQ 0.
+CALL FUNCTION 'SPELL_AMOUNT'
+  EXPORTING
+    amount    = year
+    currency  = ' '
+    filler    = ' '
+    language  = w_out
+  IMPORTING
+    in_words  = w_word_y
+  EXCEPTIONS
+    not_found = 1
+    too_large = 2
+    OTHERS    = 3.
+ENDIF.
+
+"Converter para o tipo string.
+MOVE w_word_d-word TO day_caracter.
+MOVE w_word_y-word TO year_caracter.
+
+"Concatena as variáveis para mostrar a data poe extenso.
+CONCATENATE day_caracter 'DE' t015m-monam 'DE' year_caracter INTO DATA(date) SEPARATED BY space.
+
+"Convete a saída para maiuscula.
+TRANSLATE date TO UPPER CASE.
+WRITE:/ date.
+
+"Convete a saída para minuscula.
+TRANSLATE date to lower case.
+WRITE:/ date.

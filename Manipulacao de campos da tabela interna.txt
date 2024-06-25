@@ -1,0 +1,89 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba uma tabela interna e imprima quantos campos estão em branco por linha
+*& (o tipo da tabela deve ter no mínimo 4 campos). Saída desejada deve ter o template:
+*& Linha [número da linha] =>[10 caracteres em branco] + [número de campos em branco] + “ campos em branco”.
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q15.
+
+TYPES: BEGIN OF ty_linha,
+  id        TYPE c LENGTH 10,
+  nome      TYPE string,
+  valor     TYPE i,
+  data_cria TYPE d,
+  END OF ty_linha.
+
+TYPES: ty_table TYPE STANDARD TABLE OF ty_linha.
+
+FORM count_campos_linhas USING us_table TYPE ty_table.
+  DATA: wa_linha        TYPE ty_linha,
+        lv_total_campos TYPE i,
+        lv_campo        TYPE i.
+
+  LOOP AT us_table INTO wa_linha.
+    CLEAR lv_campo.
+
+    IF wa_linha-id IS INITIAL.
+      lv_campo = lv_campo + 1.
+    ENDIF.
+    IF wa_linha-nome IS INITIAL.
+      lv_campo = lv_campo + 1.
+    ENDIF.
+    IF wa_linha-valor IS INITIAL.
+      lv_campo = lv_campo + 1.
+    ENDIF.
+    IF wa_linha-data_cria IS INITIAL.
+      lv_campo = lv_campo + 1.
+    ENDIF.
+
+    WRITE: 'Linha', sy-tabix, ' => ', lv_campo, ' campos em branco'.
+    NEW-LINE.
+
+    lv_total_campos = lv_total_campos + lv_campo.
+  ENDLOOP.
+
+  WRITE: 'Total: ', lv_total_campos.
+*  SY-ULINE: Se quiser desenhar uma linha até uma parte da lista ou se quiser utilizar offsets que desenham uma
+*  linha de uma coluna para outra coluna na mesma linha. Tem de utilizar SY-ULINE com a instrução WRITE.
+*  Ex: Escreva: SY-ULINE+(40). “Desenha uma linha da coluna 1 para a coluna 40
+  WRITE: sy-uline.
+ENDFORM.
+
+START-OF-SELECTION.
+  DATA: itab TYPE ty_table,
+        wa   TYPE ty_linha.
+
+  wa-id = '1'.
+  wa-nome = 'João'.
+  wa-valor = 2.
+  wa-data_cria = '20240505'.
+  APPEND wa TO itab.
+  CLEAR wa.
+
+  PERFORM count_campos_linhas USING itab.
+
+  wa-id = '2'.
+  wa-nome = 'Maria'.
+  wa-valor = 3.
+  "wa-data_cria = '20240507'.
+  APPEND wa TO itab.
+  CLEAR wa.
+
+  PERFORM count_campos_linhas USING itab.
+
+  wa-id = '3'.
+  wa-nome = 'José'.
+  "wa-valor = 3.
+  "wa-data_cria = '20240507'.
+  APPEND wa TO itab.
+  CLEAR wa.
+
+  PERFORM count_campos_linhas USING itab.
+
+  wa-id = '4'.
+  "wa-nome = 'José'.
+  "wa-valor = 3.
+  "wa-data_cria = '20240507'.
+  APPEND wa TO itab.
+  CLEAR wa.
+
+  PERFORM count_campos_linhas USING itab.

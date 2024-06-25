@@ -1,0 +1,31 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba uma workarea e some todos os seus campos numéricos (a workarea deve conter no mínimo 3 campos deste tipo)
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q13.
+
+TYPES: BEGIN OF ty_work_area,
+  gv_float  TYPE f,
+  gv_int    TYPE i,
+  gv_p      TYPE p,
+  END OF ty_work_area.
+
+DATA gv_result_sum TYPE ty_work_area.
+
+FORM get_result_sum USING us_work_area TYPE ty_work_area.
+  DATA lv_result_sum TYPE p LENGTH 16 DECIMALS 2.
+  lv_result_sum = 0.
+
+  lv_result_sum = us_work_area-gv_float + us_work_area-gv_int + us_work_area-gv_p.
+
+  WRITE lv_result_sum.
+  NEW-LINE.
+
+ENDFORM.
+
+START-OF-SELECTION.
+
+ gv_result_sum-gv_float = '4.5'.
+ gv_result_sum-gv_int   = 3.
+ gv_result_sum-gv_p     = '3.5'.
+
+PERFORM get_result_sum USING gv_result_sum.

@@ -1,0 +1,28 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba dois números e retorne um flag (caracter de tamanho 1). Caso os números sejam iguais a flag retornada
+*& será ‘X’ e caso contrário a flag será igual a ‘ ‘ (space).
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q09.
+
+DATA gv_flag TYPE c.
+
+FORM get_flag
+  USING
+      lv_num1 TYPE f
+      lv_num2 TYPE f
+  CHANGING
+      lv_flag TYPE c.
+
+  IF lv_num1 EQ lv_num2.
+    lv_flag = 'X'.
+  ELSE.
+    lv_flag = ' '.
+  ENDIF.
+ENDFORM.
+
+START-OF-SELECTION.
+  PERFORM get_flag USING 10 10 CHANGING gv_flag.
+  WRITE gv_flag. NEW-LINE.
+
+  PERFORM get_flag USING 1 10 CHANGING gv_flag.
+  WRITE gv_flag. NEW-LINE.

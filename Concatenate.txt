@@ -1,0 +1,10 @@
+*&---------------------------------------------------------------------*
+*& Concatene duas palavras e escreva o resultado.
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q01.
+
+DATA: gv_palavra1 TYPE c LENGTH 10 VALUE 'AMO',
+      gv_palavra2 TYPE c LENGTH 10 VALUE 'ABAP'.
+
+CONCATENATE gv_palavra1 gv_palavra2 INTO DATA(result) SEPARATED BY space.
+WRITE: result.

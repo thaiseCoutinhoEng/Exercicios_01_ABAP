@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que deve conter uma workarea com 5 campos de tipos diferentes ou mais, esta deve ser
+*& populada e os seus campos devem ser impressos um em cada linha, separados por duas linhas horizontais.
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q11.
+
+DATA: BEGIN OF work_area,
+  gv_str  TYPE string,
+  gv_date TYPE d,
+  gv_time TYPE t,
+  gv_int  TYPE i,
+  gv_hex  TYPE x LENGTH 8,
+  END OF work_area.
+
+START-OF-SELECTION.
+  work_area-gv_str  = 'string'.
+  work_area-gv_date = '20240511'.
+  work_area-gv_time = '113854'.
+  work_area-gv_int  = 345.
+  work_area-gv_hex  = '0123456789abcdef'.
+
+  WRITE: work_area-gv_str.
+  PERFORM separe_linhas.
+  WRITE: work_area-gv_date DD/MM/YYYY.
+  PERFORM separe_linhas.
+  WRITE: work_area-gv_time.
+  PERFORM separe_linhas.
+  WRITE: work_area-gv_int.
+  PERFORM separe_linhas.
+  WRITE: work_area-gv_hex.
+
+FORM separe_linhas.
+  DO 2 TIMES.
+    ULINE.
+  ENDDO.
+ENDFORM.

@@ -1,0 +1,22 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina (FORM) que imprima o username de todas as pessoas de do
+*&treinamento (Veja a tabela USR04 na SE11 e seu conteúdo) - Questão adaptada.
+*&Foi impresso todos os user da tabela USR04.
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q06.
+
+TYPES ty_users TYPE TABLE OF usr04-bname.
+DATA: gt_usr04 TYPE ty_users.
+
+START-OF-SELECTION.
+  SELECT bname FROM usr04 INTO TABLE gt_usr04.
+
+  PERFORM display_data USING gt_usr04.
+
+
+FORM display_data USING us_t_users TYPE ty_users.
+  DATA lv_user TYPE LINE OF ty_users.
+  LOOP AT us_t_users INTO lv_user.
+    WRITE lv_user. NEW-LINE.
+  ENDLOOP.
+ENDFORM.

@@ -1,0 +1,21 @@
+*&---------------------------------------------------------------------*
+*& Mostre o usuário que está executando o programa e conte quantas vogais tem.
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q05.
+
+DATA: user_name TYPE string,
+      l_pos     TYPE sy-index,
+      count     TYPE i.
+
+"sy-uname pega o usuário que está executando o programa.
+user_name = sy-uname.
+
+"strlen conta a quantidade de caracteres da variável.
+DO strlen( user_name ) TIMES.
+  l_pos = sy-index - 1 .
+  IF user_name+l_pos(1) CA 'AaEeIiOoUu'.
+     count = 1.
+  ENDIF.
+ENDDO.
+
+WRITE: / user_name, ' possui ', count, ' vogal(is).'.

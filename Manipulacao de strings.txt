@@ -1,0 +1,116 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba uma workarea com 3 campos string ou caracteres e 3 campos numéricos (usar 3 tipos numéricos diferentes)
+*& e limpe o conteúdo de seus campos de acordo com as seguintes regras:
+*& a. Limpar somente os campos texto caso a soma dos campos numéricos for ímpar (desconsiderar possíveis casas decimais);
+*& b. Limpar somente campos numéricos caso a soma de vogais dos 3 campos texto for par;
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q14.
+
+TYPES: BEGIN OF ty_work_area,
+  gv_float    TYPE f,
+  gv_int      TYPE i,
+  gv_dec      TYPE decfloat16,
+  gv_carac01  TYPE string,
+  gv_carac02  TYPE c LENGTH 3,
+  gv_carac03  TYPE n LENGTH 10,
+  END OF ty_work_area.
+
+
+FORM clear_caracter_num USING us_wa_caracter_num TYPE ty_work_area.
+  DATA: lv_sum_num    TYPE i,
+        lv_mod_result TYPE i.
+
+  lv_sum_num = us_wa_caracter_num-gv_float + us_wa_caracter_num-gv_int + us_wa_caracter_num-gv_dec.
+  "Resultado de MOD SOMA dividido por 2, resto 0.
+  lv_mod_result = lv_sum_num MOD 2.
+
+  IF lv_mod_result NE 0.
+    CLEAR:
+      us_wa_caracter_num-gv_carac01,
+      us_wa_caracter_num-gv_carac02,
+      us_wa_caracter_num-gv_carac03.
+    RETURN.
+  ENDIF.
+
+  DATA: lv_sum_vowel   TYPE i,
+        lv_cont_vowel  TYPE i.
+
+  FIND ALL OCCURRENCES OF REGEX 'a|e|i|o|u|A|E|I|O|U' IN us_wa_caracter_num-gv_carac01 MATCH COUNT lv_cont_vowel.
+  lv_sum_vowel = lv_sum_vowel + lv_cont_vowel.
+
+  FIND ALL OCCURRENCES OF REGEX 'a|e|i|o|u|A|E|I|O|U' IN us_wa_caracter_num-gv_carac02 MATCH COUNT lv_cont_vowel.
+  lv_sum_vowel = lv_sum_vowel + lv_cont_vowel.
+
+  FIND ALL OCCURRENCES OF REGEX 'a|e|i|o|u|A|E|I|O|U' IN us_wa_caracter_num-gv_carac01 MATCH COUNT lv_cont_vowel.
+  lv_sum_vowel = lv_sum_vowel + lv_cont_vowel.
+
+  lv_mod_result = lv_sum_vowel MOD 2.
+
+  IF lv_mod_result = 0.
+    CLEAR:
+      us_wa_caracter_num-gv_float,
+      us_wa_caracter_num-gv_int,
+      us_wa_caracter_num-gv_dec.
+    RETURN.
+  ENDIF.
+
+ENDFORM.
+
+START-OF-SELECTION.
+
+   DATA wa_caracter  TYPE ty_work_area.
+   DATA wa_num       TYPE ty_work_area.
+
+
+   wa_caracter-gv_carac01 = 'Eu amo Abap'.
+   wa_caracter-gv_carac02 = 'bac'.
+   wa_caracter-gv_carac03 = '0123456789'.
+   wa_caracter-gv_float   = 1.
+   wa_caracter-gv_int     = 10.
+   wa_caracter-gv_dec     = 100.
+
+   WRITE:
+     wa_caracter-gv_carac01,
+     wa_caracter-gv_carac02,
+     wa_caracter-gv_carac03,
+     wa_caracter-gv_float,
+     wa_caracter-gv_int,
+     wa_caracter-gv_dec.
+   NEW-LINE.
+   PERFORM clear_caracter_num USING wa_caracter.
+
+   WRITE:
+     wa_caracter-gv_carac01,
+     wa_caracter-gv_carac02,
+     wa_caracter-gv_carac03,
+     wa_caracter-gv_float,
+     wa_caracter-gv_int,
+     wa_caracter-gv_dec.
+   NEW-LINE.
+
+   ULINE.
+   wa_num-gv_carac01  = 'aeiouAEIOU'.
+   wa_num-gv_carac02  = 'BCD'.
+   wa_num-gv_carac03  = '0123456789'.
+   wa_num-gv_float    = 2.
+   wa_num-gv_int      = 10.
+   wa_num-gv_dec      = 100.
+
+   WRITE:
+     wa_num-gv_carac01,
+     wa_num-gv_carac02,
+     wa_num-gv_carac03,
+     wa_num-gv_float,
+     wa_num-gv_int,
+     wa_num-gv_dec.
+   NEW-LINE.
+   PERFORM clear_caracter_num USING wa_num.
+
+   WRITE:
+     wa_num-gv_carac01,
+     wa_num-gv_carac02,
+     wa_num-gv_carac03,
+     wa_num-gv_float,
+     wa_num-gv_int,
+     wa_num-gv_dec.
+   NEW-LINE.

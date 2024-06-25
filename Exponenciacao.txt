@@ -1,0 +1,14 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba dois números (base e expoente) obrigatórios (via parameters). Imprima o resultado da exponenciação.
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q17.
+
+PARAMETERS: p_base     TYPE p LENGTH 4 OBLIGATORY,
+            p_exp      TYPE i OBLIGATORY.
+
+START-OF-SELECTION.
+  DATA gv_result TYPE p LENGTH 16 DECIMALS 2.
+
+  gv_result = p_base ** p_exp.
+
+  WRITE: / gv_result.

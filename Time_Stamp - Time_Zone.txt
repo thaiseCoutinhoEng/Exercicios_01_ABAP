@@ -1,0 +1,19 @@
+*&---------------------------------------------------------------------*
+*& Leia a hora atual do sistema e escreva o horário em 6 diferentes fusos (3 deles
+*& devem ser obrigatoriamente Greenwich, Brasília e o Delhi).
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q04.
+
+DATA: time TYPE timestamp.
+
+* Esta instrução cria um carimbo de data/hora POSIX UTC a partir da hora e data do sistema no AS ABAP e o atribui à variável time.
+GET TIME STAMP FIELD time.
+
+* Conversão de acordo com o TimeZone.
+* Para ver as conversões possíveis, veja a tabela TTZZ
+WRITE / time TIME ZONE 'BRAZIL'.
+WRITE / time TIME ZONE 'INDIA'.
+WRITE / time TIME ZONE 'UK'.
+WRITE / time TIME ZONE 'CHILE'.
+WRITE / time TIME ZONE 'NEPAL'.
+WRITE / time TIME ZONE 'PST'.

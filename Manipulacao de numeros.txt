@@ -1,0 +1,41 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba dois números (via parameters). O primeiro representa um número a ser impresso
+*& e o segundo representa o número de casas a serem impressas. Coloque zeros a esquerda caso necessário. Exemplos:
+*& a. p_numero = 15 p_casas = 2. Saída = 15
+*& b. p_numero = 15 p_casas = 4. Saída = 0015
+*& c. p_numero = 15 p_casas = 6. Saída = 000015
+*& d. p_numero = 2011 p_casas = 2. Saída = 20
+*& e. p_numero = 123456789 p_casas = 10. Saída = 0123456789
+*& f. p_numero = 123456789 p_casas = 4. Saída = 1234
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q16.
+
+PARAMETERS:
+  p_num   TYPE i,
+  p_qtd   TYPE i.
+
+START-OF-SELECTION.
+
+  DATA: gv_num_string         TYPE string,
+        gv_num_qtd            TYPE i,
+        gv_num_zeros_esquerda  TYPE string.
+
+  gv_num_string = p_num.
+*CONDENSE junta as palvras sem deixar espaço entre elas. Para remover todos os espaços basta acrescentar o parâmetro NO-GAPS à direita da variável.
+  CONDENSE gv_num_string NO-GAPS.
+  gv_num_qtd = strlen( gv_num_string ).
+
+  IF gv_num_qtd > p_qtd.
+    WRITE: gv_num_string(p_qtd).
+  ELSE.
+    DATA: lv_zeros            TYPE i,
+          lv_zeros_esquerda   TYPE string.
+
+    lv_zeros = p_qtd - gv_num_qtd.
+
+    DO lv_zeros TIMES.
+      CONCATENATE lv_zeros_esquerda '0' INTO lv_zeros_esquerda.
+    ENDDO.
+    CONCATENATE lv_zeros_esquerda gv_num_string INTO gv_num_zeros_esquerda.
+    WRITE: gv_num_zeros_esquerda.
+  ENDIF.

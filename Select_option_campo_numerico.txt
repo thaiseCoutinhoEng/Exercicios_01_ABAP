@@ -1,0 +1,16 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que contenha um select-option para um campo numérico sem o botão de seleção de ranges múltiplos e,
+*& que imprima os números deste range separados por “, “.
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q20.
+
+DATA: gv_num        TYPE i.
+
+SELECT-OPTIONS s_num FOR gv_num NO INTERVALS.
+
+START-OF-SELECTION.
+
+  LOOP AT s_num.
+    WRITE:/ s_num-low, ','.
+*    NEW-LINE.
+  ENDLOOP.

@@ -1,0 +1,33 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que recebe dois números e escreve o resultado da operação [maior_numero / menor_numero]
+*& caso os números sejam diferentes e escreva o resultado de [número ^ 2] caso sejam iguais.
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q10.
+
+DATA gv_result_op TYPE p LENGTH 16 DECIMALS 2.
+
+FORM get_result_op
+  USING
+      lv_num1 TYPE p
+      lv_num2 TYPE p
+  CHANGING
+      lv_result_op TYPE p.
+
+  IF lv_num1 GT lv_num2.
+    lv_result_op = ( lv_num1 / lv_num2 ).
+  ELSEIF lv_num2 GT lv_num1.
+    lv_result_op = ( lv_num2 / lv_num1 ).
+  ELSE.
+   lv_result_op = ( lv_num1 ** 2 ).
+  ENDIF.
+ENDFORM.
+
+START-OF-SELECTION.
+  PERFORM get_result_op USING 10 10 CHANGING gv_result_op.
+  WRITE gv_result_op. NEW-LINE.
+
+  PERFORM get_result_op USING 10 6 CHANGING gv_result_op.
+  WRITE gv_result_op. NEW-LINE.
+
+  PERFORM get_result_op USING 5 20 CHANGING gv_result_op.
+  WRITE gv_result_op. NEW-LINE.

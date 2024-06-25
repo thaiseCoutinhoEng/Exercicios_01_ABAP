@@ -1,0 +1,56 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba uma workarea contendo 5 tipos de dados diferentes e conte quantos campos não estão preenchidos. Imprimir resultado.
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q12.
+
+TYPES: BEGIN OF ty_work_area,
+  gv_str  TYPE string,
+  gv_date TYPE d,
+  gv_time TYPE t,
+  gv_int  TYPE i,
+  gv_hex  TYPE x LENGTH 8,
+  END OF ty_work_area.
+
+DATA gv_work_area TYPE ty_work_area.
+
+FORM count_initial_components USING us_work_area TYPE ty_work_area.
+  DATA lv_initial_components_counter TYPE i.
+
+  IF us_work_area-gv_str IS INITIAL.
+    lv_initial_components_counter = lv_initial_components_counter + 1.
+  ENDIF.
+
+  IF us_work_area-gv_date IS INITIAL.
+    lv_initial_components_counter = lv_initial_components_counter + 1.
+  ENDIF.
+
+  IF us_work_area-gv_time IS INITIAL.
+    lv_initial_components_counter = lv_initial_components_counter + 1.
+  ENDIF.
+
+  IF us_work_area-gv_int IS INITIAL.
+    lv_initial_components_counter = lv_initial_components_counter + 1.
+  ENDIF.
+
+  IF us_work_area-gv_hex IS INITIAL.
+     lv_initial_components_counter = lv_initial_components_counter + 1.
+  ENDIF.
+
+  WRITE: 'Variáveis com valores: ', lv_initial_components_counter.
+
+  NEW-LINE.
+ENDFORM.
+
+START-OF-SELECTION.
+
+ PERFORM count_initial_components USING gv_work_area.
+ gv_work_area-gv_str = 'string'.
+ PERFORM count_initial_components USING gv_work_area.
+ gv_work_area-gv_date = '20240511'.
+ PERFORM count_initial_components USING gv_work_area.
+ gv_work_area-gv_time = '134059'.
+ PERFORM count_initial_components USING gv_work_area.
+ gv_work_area-gv_int = 321.
+ PERFORM count_initial_components USING gv_work_area.
+ gv_work_area-gv_hex = '0123456789ABCDEF'.
+ PERFORM count_initial_components USING gv_work_area.

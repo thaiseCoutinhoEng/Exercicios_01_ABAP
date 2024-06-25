@@ -1,0 +1,17 @@
+*&---------------------------------------------------------------------*
+*& Concatene duas palavras e o mês atual, unindo por “-“ e escreva o resultado.
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q02.
+
+DATA: gv_palavra1 TYPE c LENGTH 10 VALUE 'AMO',
+      gv_palavra2 TYPE c LENGTH 10 VALUE 'ABAP',
+      monum       TYPE monum.
+
+*Atualmente, SY-DATUM contém a data do sistema e o seu tipo de dados é Char, com comprimento 8 e formato AAAAMMDD.
+*Assim, se quisermos obter o mês, em que precisamos de captar 2 caracteres de 4 (uma vez que a contagem começa em 0).
+
+monum = sy-datum+4(2).
+
+SELECT SINGLE * FROM t015m INTO @DATA(t015m) WHERE spras EQ @sy-langu AND monum EQ @monum.
+CONCATENATE gv_palavra1 gv_palavra2 '-' t015m-monam INTO DATA(result) SEPARATED BY space.
+WRITE: result.

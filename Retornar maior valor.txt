@@ -1,0 +1,24 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que receba dois números e retorne o maior deles (caso os números sejam iguais retorne o próprio número).
+*&---------------------------------------------------------------------*
+REPORT ztc_mod03_q08.
+
+DATA gv_maior_valor TYPE f.
+
+FORM get_maior_valor
+  USING
+      lv_num1 TYPE f
+      lv_num2 TYPE f
+  CHANGING
+      lv_maior_valor TYPE f.
+
+  IF lv_num1 GE lv_num2.
+    lv_maior_valor = lv_num1.
+  ELSE.
+    lv_maior_valor = lv_num2.
+  ENDIF.
+ENDFORM.
+
+START-OF-SELECTION.
+  PERFORM get_maior_valor USING 1 10 CHANGING gv_maior_valor.
+  WRITE gv_maior_valor EXPONENT 0. NEW-LINE.

@@ -1,0 +1,20 @@
+*&---------------------------------------------------------------------*
+*& Faça uma rotina que contenha um select-option para um campo numérico e imprimir o resultado da
+*& multiplicação de cada número dentro do range por 3.
+*&---------------------------------------------------------------------*
+REPORT ZTC_MOD03_Q19.
+
+DATA gv_num TYPE i.
+SELECT-OPTIONS s_num FOR gv_num NO-EXTENSION.
+
+START-OF-SELECTION.
+  DATA: gv_qtd            TYPE i,
+        gv_result_multip  TYPE i.
+
+  gv_qtd = s_num-high - s_num-low + 1.
+
+  DO gv_qtd TIMES.
+    gv_result_multip = ( s_num-low + sy-index - 1 ) * 3.
+    WRITE gv_result_multip.
+    NEW-LINE.
+  ENDDO.
